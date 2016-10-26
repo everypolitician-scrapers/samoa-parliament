@@ -35,4 +35,4 @@ def scrape_list(url)
   end
 end
 
-scrape_list('http://www.parliament.gov.ws/new/members-of-parliament/member/')
+scrape_list('http://www.palemene.ws/new/members-of-parliament/members-of-the-xvi-parliament/')
