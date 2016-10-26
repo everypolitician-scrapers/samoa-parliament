@@ -21,17 +21,14 @@ end
 def scrape_list(url)
   warn url
   noko = noko_for(url)
-  noko.css('div.ngg-gallery-thumbnail a').each do |a|
+  noko.xpath('//div[@class="entry"]/table[1]/tbody/tr').each do |a|
+    name_and_party = a.xpath('td/text()')[1].text
     data = { 
-      id: a.attr('data-image-id'),
-      name: a.attr('data-title'),
-      image: a.attr('data-src'),
+      name: name_and_party.split('(')[0].tidy,
+      party: name_and_party.match(/\(([A-Z]+)/)[1].tidy,
+      area: a.xpath('td/text()')[2].text.tidy
     }
-    ScraperWiki.save_sqlite([:id, :name], data)
-  end
-
-  unless (next_page = noko.css('div.ngg-navigation a.next/@href')).empty?
-    scrape_list(next_page.text) rescue binding.pry
+    ScraperWiki.save_sqlite([:name], data)
   end
 end
 
