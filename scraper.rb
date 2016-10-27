@@ -30,10 +30,6 @@ def scrape_list(url)
     }
     ScraperWiki.save_sqlite([:name], data)
   end
-
-  unless (next_page = noko.css('div.ngg-navigation a.next/@href')).empty?
-    scrape_list(next_page.text) rescue binding.pry
-  end
 end
 
 scrape_list('http://www.palemene.ws/new/members-of-parliament/members-of-the-xvi-parliament/')
