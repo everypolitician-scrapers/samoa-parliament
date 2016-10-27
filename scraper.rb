@@ -28,7 +28,8 @@ def scrape_list(url)
       name: name_and_party.split('(')[0].tidy,
       party_id: party_id,
       party_name: party_list[party_id],
-      area: a.xpath('td/text()')[2].text.tidy
+      area: a.xpath('td/text()')[2].text.tidy,
+      term: 16
     }
     ScraperWiki.save_sqlite([:name], data)
   end
