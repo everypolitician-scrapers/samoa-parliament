@@ -23,7 +23,7 @@ def scrape_list(url)
   noko = noko_for(url)
   noko.xpath('//div[@class="entry"]/table[1]/tbody/tr').each do |a|
     name_and_party = a.xpath('td/text()')[1].text
-    party_id = name_and_party.match(/\(([A-Z]+)/)[1].tidy
+    party_id = name_and_party.split('(')[-1].gsub(')','')
     data = {
       name: name_and_party.split('(')[0].tidy,
       party_id: party_id,
