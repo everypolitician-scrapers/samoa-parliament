@@ -23,13 +23,22 @@ def scrape_list(url)
   noko = noko_for(url)
   noko.xpath('//div[@class="entry"]/table[1]/tbody/tr').each do |a|
     name_and_party = a.xpath('td/text()')[1].text
-    data = { 
+    party_id = name_and_party.match(/\(([A-Z]+)/)[1].tidy
+    data = {
       name: name_and_party.split('(')[0].tidy,
-      party: name_and_party.match(/\(([A-Z]+)/)[1].tidy,
+      party_id: party_id,
+      party_name: party_list[party_id],
       area: a.xpath('td/text()')[2].text.tidy
     }
     ScraperWiki.save_sqlite([:name], data)
   end
+end
+
+def party_list
+  {
+    'H' => 'HRPP',
+    'TS' => 'Tautua Samoa'
+  }
 end
 
 scrape_list('http://www.palemene.ws/new/members-of-parliament/members-of-the-xvi-parliament/')
