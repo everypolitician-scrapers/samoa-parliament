@@ -18,9 +18,6 @@ def noko_for(url)
   Nokogiri::HTML(open(url).read)
 end
 
-def name_and_id(str)
-end
-
 def scrape_list(url)
   warn url
   noko = noko_for(url)
