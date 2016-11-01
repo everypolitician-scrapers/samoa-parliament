@@ -1,13 +1,20 @@
 require 'nokogiri'
 require 'open-uri/cached'
+require 'field_serializer'
 OpenURI::Cache.cache_path = '.cache'
 
 class Members
+  include FieldSerializer
+
   def initialize(url)
     @url = url
   end
 
-  def to_a
+  field :members do
+    legislature_members
+  end
+
+  def legislature_members
     noko.xpath('//div[@class="entry"]/table[1]/tbody/tr').map do |a|
       name_and_party = a.xpath('td/text()')[1].text
       party_id = name_and_party.split('(')[-1].gsub(')','')

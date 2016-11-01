@@ -14,6 +14,6 @@ end
 
 URL = 'http://www.palemene.ws/new/members-of-parliament/members-of-the-xvi-parliament/'.freeze
 
-Members.new(URL).to_a.each do |member|
+Members.new(URL).to_h[:members].each do |member|
   ScraperWiki.save_sqlite([:name], member)
 end
