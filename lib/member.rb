@@ -40,6 +40,14 @@ class Member
     name_and_party.split('(').first.tidy
   end
 
+  def matai_titles
+    full_name.delete('.')
+             .split(' ')
+             .select do |w|
+      w == w.upcase && w.length > 1
+    end.map(&:capitalize)
+  end
+
   def party_id
     name_and_party.split('(')[-1].delete(')')
   end
