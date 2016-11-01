@@ -7,8 +7,8 @@ OpenURI::Cache.cache_path = '.cache'
 class Members
   include FieldSerializer
 
-  def initialize(url)
-    @url = url
+  def initialize(noko)
+    @noko = noko
   end
 
   field :members do
@@ -23,9 +23,6 @@ class Members
 
   private
 
-  attr_reader :url
+  attr_reader :noko
 
-  def noko
-    @noko ||= Nokogiri::HTML(open(url).read)
-  end
 end

@@ -13,7 +13,8 @@ class String
 end
 
 URL = 'http://www.palemene.ws/new/members-of-parliament/members-of-the-xvi-parliament/'.freeze
+NOKO = Nokogiri::HTML(open(URL).read)
 
-Members.new(URL).to_h[:members].each do |member|
+Members.new(NOKO).to_h[:members].each do |member|
   ScraperWiki.save_sqlite([:name], member)
 end
