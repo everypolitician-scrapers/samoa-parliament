@@ -9,7 +9,7 @@ class Member
   end
 
   field :name do
-    name_and_party.split('(')[0].tidy
+    full_name
   end
 
   field :party_id do
@@ -34,6 +34,10 @@ class Member
 
   def name_and_party
     noko.xpath('td/text()')[1].text
+  end
+
+  def full_name
+    name_and_party.split('(').first.tidy
   end
 
   def party_id
