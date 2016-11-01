@@ -9,7 +9,7 @@ class Member
   end
 
   field :name do
-    full_name
+    name_without_titles
   end
 
   field :honorific_prefix do
@@ -42,6 +42,10 @@ class Member
 
   def full_name
     name_and_party.split('(').first.tidy
+  end
+
+  def name_without_titles
+    full_name.split(matai_titles[-1].upcase)[-1].tidy
   end
 
   def matai_titles
