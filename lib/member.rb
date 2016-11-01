@@ -12,6 +12,10 @@ class Member
     full_name
   end
 
+  field :honorific_prefix do
+    matai_titles.join(' ')
+  end
+
   field :party_id do
     party_id
   end
