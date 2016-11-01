@@ -13,7 +13,7 @@ class Member
   end
 
   field :honorific_prefix do
-    matai_titles.join(' ')
+    matai_titles.join(';')
   end
 
   field :party_id do
