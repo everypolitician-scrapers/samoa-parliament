@@ -9,7 +9,7 @@ class Member
   end
 
   field :name do
-    name_without_titles
+    "#{matai_titles.join(' ')} #{name_without_titles}"
   end
 
   field :honorific_prefix do
