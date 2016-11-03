@@ -16,10 +16,6 @@ class Member
     name_without_titles
   end
 
-  field :honorific_prefix do
-    matai_titles.join(';')
-  end
-
   field :party_id do
     party_id
   end
