@@ -16,6 +16,10 @@ class Member
     name_without_titles
   end
 
+  field :honorific_prefix do
+    full_name.scan(professional_titles).join(' ')
+  end
+
   field :party_id do
     party_id
   end
@@ -45,7 +49,7 @@ class Member
   end
 
   def name_without_titles
-    full_name.split(matai_titles[-1].upcase)[-1].tidy
+    full_name.split(matai_titles[-1].upcase)[-1].gsub(professional_titles,'').tidy
   end
 
   def matai_titles
@@ -54,6 +58,10 @@ class Member
              .select do |w|
       w == w.upcase && w.length > 1
     end.map(&:capitalize)
+  end
+
+  def professional_titles
+    Regexp.union('Dr', 'Prof')
   end
 
   def party_id
