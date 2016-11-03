@@ -12,6 +12,10 @@ class Member
     "#{matai_titles.join(' ')} #{name_without_titles}"
   end
 
+  field :other_name do
+    name_without_titles
+  end
+
   field :honorific_prefix do
     matai_titles.join(';')
   end
