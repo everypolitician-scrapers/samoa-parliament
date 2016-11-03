@@ -2,11 +2,9 @@
 # encoding: utf-8
 
 require 'scraperwiki'
-require 'nokogiri'
 require 'colorize'
+require_relative 'lib/members'
 require 'pry'
-require 'open-uri/cached'
-OpenURI::Cache.cache_path = '.cache'
 
 class String
   def tidy
@@ -14,25 +12,13 @@ class String
   end
 end
 
-def noko_for(url)
-  Nokogiri::HTML(open(url).read)
+URL = 'http://www.palemene.ws/new/members-of-parliament/members-of-the-xvi-parliament/'.freeze
+# We need to tweak the document slightly as the trible names of one member are
+# not capitalized in the same way as the trible names of other members. We're doing this now
+# to avoid complications later
+BODY = open(URL).read.gsub('Fatialofa Lupesoliai Tuilaepa', 'FATIALOFA LUPESOLIAI TUILAEPA')
+NOKO = Nokogiri::HTML(BODY)
+
+Members.new(NOKO).to_h[:members].each do |member|
+  ScraperWiki.save_sqlite([:name], member)
 end
-
-def scrape_list(url)
-  warn url
-  noko = noko_for(url)
-  noko.css('div.ngg-gallery-thumbnail a').each do |a|
-    data = { 
-      id: a.attr('data-image-id'),
-      name: a.attr('data-title'),
-      image: a.attr('data-src'),
-    }
-    ScraperWiki.save_sqlite([:id, :name], data)
-  end
-
-  unless (next_page = noko.css('div.ngg-navigation a.next/@href')).empty?
-    scrape_list(next_page.text) rescue binding.pry
-  end
-end
-
-scrape_list('http://www.parliament.gov.ws/new/members-of-parliament/member/')
