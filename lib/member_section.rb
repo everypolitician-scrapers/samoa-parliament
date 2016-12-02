@@ -6,7 +6,7 @@ class MemberSection < Scraped::HTML
   end
 
   field :party_id do
-    party_id
+    name_and_party.split('(')[-1].gsub(')','')
   end
 
   field :party_name do
@@ -22,10 +22,6 @@ class MemberSection < Scraped::HTML
   end
 
   private
-
-  def party_id
-    name_and_party.split('(')[-1].gsub(')','')
-  end
 
   def party_list
     {
