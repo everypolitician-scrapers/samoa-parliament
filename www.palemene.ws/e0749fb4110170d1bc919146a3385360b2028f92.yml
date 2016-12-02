@@ -1,0 +1,48 @@
+---
+request:
+  method: get
+  uri: http://www.palemene.ws/new/members-of-parliament/members-of-the-xvi-parliament/
+  body:
+    encoding: US-ASCII
+    string: ''
+  headers:
+    Accept-Encoding:
+    - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+    Accept:
+    - "*/*"
+    User-Agent:
+    - Ruby
+response:
+  status:
+    code: 200
+    message: OK
+  headers:
+    Date:
+    - Fri, 02 Dec 2016 11:45:24 GMT
+    Server:
+    - Apache/2.4.3 (Unix) OpenSSL/1.0.1c PHP/5.4.7
+    X-Powered-By:
+    - PHP/5.4.7
+    Set-Cookie:
+    - PHPSESSID=u1asbujat0fmomjvu4r6uq7e47; path=/
+    - edd_items_in_cart=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/new/
+    - wfvt_2072467376=58415edb9fcdd; expires=Fri, 02-Dec-2016 12:15:31 GMT; path=/;
+      httponly
+    Expires:
+    - Thu, 19 Nov 1981 08:52:00 GMT
+    Cache-Control:
+    - no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+    Pragma:
+    - no-cache
+    X-Pingback:
+    - http://www.palemene.ws/new/xmlrpc.php
+    Link:
+    - "<http://www.palemene.ws/new/?p=7846>; rel=shortlink"
+    Transfer-Encoding:
+    - chunked
+    Content-Type:
+    - text/html; charset=UTF-8
+  body:
+    encoding: ASCII-8BIT
+  http_version: 
+recorded_at: Fri, 02 Dec 2016 11:46:35 GMT
