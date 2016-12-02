@@ -17,18 +17,11 @@ class String
   end
 end
 
-def noko_for(url)
-  Nokogiri::HTML(open(url).read)
-end
-
 def scrape_list(url)
   warn url
-  noko = noko_for(url)
-  noko.xpath('//div[@class="entry"]/table[1]/tbody/tr').each do |a|
-    ScraperWiki.save_sqlite(
-      [:name],
-      MemberSection.new(response: Scraped::Request.new(url: url).response, noko: a).to_h
-    )
+  MemberList.new(response: Scraped::Request.new(url: url).response)
+            .member_sections.each do |member_section|
+    ScraperWiki.save_sqlite([:name], member_section.to_h)
   end
 end
 
