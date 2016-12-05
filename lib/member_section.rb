@@ -2,11 +2,11 @@ require 'scraped'
 
 class MemberSection < Scraped::HTML
   field :name do
-    name_and_party.split('(')[0].tidy
+    noko.at_css('.ep_member_name').text
   end
 
   field :party_id do
-    name_and_party.split('(')[-1].gsub(')','')
+    noko.at_css('.ep_member_party').text.gsub(Regexp.union('(',')'),'')
   end
 
   field :party_name do
@@ -14,7 +14,7 @@ class MemberSection < Scraped::HTML
   end
 
   field :area do
-    noko.xpath('td/text()')[2].text.tidy
+    noko.xpath('td/text()').last.text
   end
 
   field :term do

@@ -20,7 +20,7 @@ end
 
 def scrape_list(url)
   warn url
-  MemberList.new(response: Scraped::Request.new(url: url).response)
+  MemberList.new(response: Scraped::Request.new(url: url).response(decorators: [NamesAndParty]))
             .member_sections.each do |member_section|
     ScraperWiki.save_sqlite([:name], member_section.to_h)
   end
