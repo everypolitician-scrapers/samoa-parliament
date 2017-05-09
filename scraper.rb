@@ -11,13 +11,33 @@ OpenURI::Cache.cache_path = '.cache'
 
 class MembersPage < Scraped::HTML
   field :members do
-    noko.at_css('.entry table').css('tr').map do |tr|
+    member_table.css('tr').map do |tr|
       fragment(tr => MemberRow).to_h
     end
   end
+
+  field :parties do
+    party_table.css('tr').map do |tr|
+      fragment(tr => PartyRow).to_h
+    end
+  end
+
+  def member_table
+    noko.at_css('.entry table')
+  end
+
+  def party_table
+    noko.css('.entry table').last
+  end
 end
 
-class MemberRow < Scraped::HTML
+class TableRow < Scraped::HTML
+  def td
+    noko.css('td')
+  end
+end
+
+class MemberRow < TableRow
   field :id do
     td[0].text.tidy
   end
@@ -34,20 +54,22 @@ class MemberRow < Scraped::HTML
     name_field_parts['partyid']
   end
 
-  field :party do
-    party_id
-  end
-
   private
-
-  def td
-    noko.css('td')
-  end
 
   # Tofa AUMUA Isaia Lameko (H)
   #  bracketed part = party ID
   def name_field_parts
     td[1].text.tidy.match(/(?<name>.*) \((?<partyid>.*?)\)/)
+  end
+end
+
+class PartyRow < TableRow
+  field :id do
+    td[0].text.tidy
+  end
+
+  field :name do
+    td[1].text.tidy
   end
 end
 
@@ -57,7 +79,12 @@ def scraper(h)
 end
 
 start = 'http://www.palemene.ws/new/members-of-parliament/members-of-the-xvi-parliament/'
-data = scraper(start => MembersPage).members
+scraped = scraper(start => MembersPage)
+parties = scraped.parties.map { |p| [p[:id], p[:name]] }.to_h
+
+data = scraped.members.map do |mem|
+  mem.merge(party: parties[mem[:party_id]], term: 16)
+end
 data.each { |mem| puts mem.reject { |_, v| v.to_s.empty? }.sort_by { |k, _| k }.to_h } if ENV['MORPH_DEBUG']
 
 ScraperWiki.sqliteexecute('DROP TABLE data') rescue nil
