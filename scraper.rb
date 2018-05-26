@@ -17,9 +17,8 @@ class MembersPage < Scraped::HTML
   end
 
   field :parties do
-    party_table.css('tr').map do |tr|
-      fragment(tr => PartyRow).to_h
-    end
+    # TS has vanished from the page!
+    listed_parties + [{ id: "TS", name: "Tautua Samoa" }]
   end
 
   def member_table
@@ -28,6 +27,10 @@ class MembersPage < Scraped::HTML
 
   def party_table
     noko.css('.entry table').last
+  end
+
+  def listed_parties
+    party_table.css('tr').map { |tr| fragment(tr => PartyRow).to_h }
   end
 end
 
